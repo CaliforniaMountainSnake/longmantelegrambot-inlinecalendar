@@ -1,0 +1,39 @@
+{
+    "name": "californiamountainsnake/longmantelegrambot-inlinecalendar",
+    "type": "library",
+    "description": "This is the calendar in form of inline keyboard.",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "CaliforniaMountainSnake",
+            "email": "CaliforniaMountainSnake1@yandex.ru"
+        }
+    ],
+    "require": {
+        "php": "^7.1",
+        "ext-curl": "*",
+        "ext-json": "*",
+        "myclabs/php-enum": "~1.5",
+        "californiamountainsnake/php-utils": "~1.0.3",
+        "californiamountainsnake/longmantelegrambot-inlinemenu": "~1.1.3"
+    },
+    "require-dev": {
+        "ext-dom": "*",
+        "phpunit/phpunit": "^7.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "CaliforniaMountainSnake\\UtilTraits\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "test": [
+            "\"vendor/bin/phpunit\""
+        ]
+    }
+}
