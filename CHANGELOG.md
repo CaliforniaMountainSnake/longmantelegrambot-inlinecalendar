@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Security
 
 
+## [1.0.2] - 2019-08-28
+### Fixed
+- Fixed the bug with composer's namespace.
+
 ## [1.0.1] - 2019-08-28
 ### Fixed
 - Fixed the README bug.

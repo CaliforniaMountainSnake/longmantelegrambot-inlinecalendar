@@ -4,7 +4,6 @@ namespace CaliforniaMountainSnake\InlineCalendar;
 
 use CaliforniaMountainSnake\LongmanTelegrambotUtils\ConversationUtils;
 use CaliforniaMountainSnake\LongmanTelegrambotUtils\SendUtils;
-use CaliforniaMountainSnake\UtilTraits\CalendarLangUtils;
 use Longman\TelegramBot\Entities\Keyboard;
 use Longman\TelegramBot\Entities\Message;
 use Longman\TelegramBot\Entities\ServerResponse;

@@ -1,6 +1,6 @@
 <?php
 
-namespace CaliforniaMountainSnake\UtilTraits;
+namespace CaliforniaMountainSnake\InlineCalendar;
 
 trait CalendarLangUtils
 {
