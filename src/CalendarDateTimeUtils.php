@@ -2,8 +2,15 @@
 
 namespace CaliforniaMountainSnake\InlineCalendar;
 
+use Psr\Log\LoggerInterface;
+
 trait CalendarDateTimeUtils
 {
+    /**
+     * @return LoggerInterface
+     */
+    abstract public function getInlineCalendarLogger(): LoggerInterface;
+
     /**
      * @return int[] [year, month, day].
      */

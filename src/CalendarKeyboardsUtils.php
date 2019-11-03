@@ -5,12 +5,18 @@ namespace CaliforniaMountainSnake\InlineCalendar;
 use CaliforniaMountainSnake\LongmanTelegrambotInlinemenu\InlineButton\InlineButton;
 use CaliforniaMountainSnake\UtilTraits\ArrayUtils;
 use Longman\TelegramBot\Entities\InlineKeyboard;
+use Psr\Log\LoggerInterface;
 
 trait CalendarKeyboardsUtils
 {
     use CalendarTimeUnitNames;
     use CalendarDateTimeUtils;
     use ArrayUtils;
+
+    /**
+     * @return LoggerInterface
+     */
+    abstract public function getInlineCalendarLogger(): LoggerInterface;
 
     /**
      * Создать клавиатуру календаря выбора дня месяца.
@@ -42,6 +48,7 @@ trait CalendarKeyboardsUtils
         $this->preprocessCalendarKeyboard($result, $_config);
         $this->addCommandKeyboardRow($_year, $_month, $result);
 
+        $this->getInlineCalendarLogger()->debug('DaysOfMonthKeyboardArray', $result);
         return InlineButton::buttonsArray(self::getCommandName(), $result);
     }
 
@@ -61,6 +68,7 @@ trait CalendarKeyboardsUtils
             ++$index;
         }
 
+        $this->getInlineCalendarLogger()->debug('MonthsKeyboardArray', $result);
         return InlineButton::buttonsArray(self::getCommandName(), $result);
     }
 
@@ -82,6 +90,7 @@ trait CalendarKeyboardsUtils
             ++$index;
         }
 
+        $this->getInlineCalendarLogger()->debug('YearsKeyboardArray', $result);
         return InlineButton::buttonsArray(self::getCommandName(), $result);
     }
 

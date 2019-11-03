@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Security
 
 
+## [1.0.3] - 2019-11-03
+### Added
+- Added possibility to set the logger for InlineCalendar.
+
 ## [1.0.2] - 2019-08-28
 ### Fixed
 - Fixed the bug with composer's namespace.

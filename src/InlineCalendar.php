@@ -8,6 +8,8 @@ use Longman\TelegramBot\Entities\Keyboard;
 use Longman\TelegramBot\Entities\Message;
 use Longman\TelegramBot\Entities\ServerResponse;
 use Longman\TelegramBot\Exception\TelegramException;
+use Psr\Log\LoggerInterface;
+use Psr\Log\NullLogger;
 
 /**
  * Inline-календарь для выбора даты.
@@ -23,6 +25,11 @@ trait InlineCalendar
     use CalendarLangUtils;
     use SendUtils;
     use ConversationUtils;
+
+    /**
+     * @var LoggerInterface
+     */
+    protected $inlineCalendarLogger;
 
     /**
      * @return string
@@ -425,5 +432,26 @@ trait InlineCalendar
     {
         $blank = $this->getBlankString();
         return \strpos($_text, $blank) === 0;
+    }
+
+    //------------------------------------------------------------------------------------------------------------------
+
+    /**
+     * @param LoggerInterface $_logger
+     */
+    public function setInlineCalendarLogger(LoggerInterface $_logger): void
+    {
+        $this->inlineCalendarLogger = $_logger;
+    }
+
+    /**
+     * @return LoggerInterface
+     */
+    public function getInlineCalendarLogger(): LoggerInterface
+    {
+        if ($this->inlineCalendarLogger === null) {
+            $this->inlineCalendarLogger = new NullLogger();
+        }
+        return $this->inlineCalendarLogger;
     }
 }

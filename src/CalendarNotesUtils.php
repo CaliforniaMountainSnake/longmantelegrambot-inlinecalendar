@@ -4,11 +4,17 @@ namespace CaliforniaMountainSnake\InlineCalendar;
 
 use CaliforniaMountainSnake\LongmanTelegrambotUtils\ConversationUtils;
 use Longman\TelegramBot\Exception\TelegramException;
+use Psr\Log\LoggerInterface;
 
 trait CalendarNotesUtils
 {
     use CalendarStringValues;
     use ConversationUtils;
+    
+    /**
+     * @return LoggerInterface
+     */
+    abstract public function getInlineCalendarLogger(): LoggerInterface;
 
     /**
      * @param CalendarConfig $_config
