@@ -4,6 +4,7 @@ namespace CaliforniaMountainSnake\InlineCalendar;
 
 class CalendarConfig
 {
+    use InlineCalendarLogger;
     use CalendarTimeCalculationUtils;
     use CalendarDateTimeUtils;
 

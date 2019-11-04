@@ -4,6 +4,8 @@ namespace CaliforniaMountainSnake\InlineCalendar;
 
 /**
  * The mathematics functions intended to calculation dates.
+ *
+ * @TODO Move to the separate project.
  */
 trait CalendarTimeCalculationUtils
 {
@@ -12,8 +14,8 @@ trait CalendarTimeCalculationUtils
      *
      * @param int $_year
      *
-     * @see https://stackoverflow.com/a/11595914/10452175
      * @return bool
+     * @see https://stackoverflow.com/a/11595914/10452175
      */
     public function isLeapYear(int $_year): bool
     {
@@ -29,8 +31,8 @@ trait CalendarTimeCalculationUtils
      * @param int $_month
      * @param int $_day
      *
-     * @see https://en.wikipedia.org/wiki/Determination_of_the_day_of_the_week#Sakamoto's_methods
      * @return int
+     * @see https://en.wikipedia.org/wiki/Determination_of_the_day_of_the_week#Sakamoto's_methods
      */
     public function getDayOfWeekByDate(int $_year, int $_month, int $_day): int
     {

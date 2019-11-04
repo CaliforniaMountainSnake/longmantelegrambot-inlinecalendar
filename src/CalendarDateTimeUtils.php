@@ -4,6 +4,8 @@ namespace CaliforniaMountainSnake\InlineCalendar;
 
 trait CalendarDateTimeUtils
 {
+    use InlineCalendarLogger;
+
     /**
      * @return int[] [year, month, day].
      */

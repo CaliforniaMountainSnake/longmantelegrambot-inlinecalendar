@@ -9,6 +9,7 @@ use Psr\Log\LoggerInterface;
 
 trait CalendarKeyboardsUtils
 {
+    use InlineCalendarLogger;
     use CalendarTimeUnitNames;
     use CalendarDateTimeUtils;
     use ArrayUtils;
