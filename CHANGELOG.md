@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Security
 
 
+## [1.0.6] - 2019-11-04
+### Added
+- Added more log messages in CalendarKeyboardsUtils.
+
 ## [1.0.5] - 2019-11-04
 ### Changed
 - InlineCalendarLogger has been moved to the separate trait (This allows to initialize the logger without initialization of the main calendar trait).

@@ -31,6 +31,7 @@ trait CalendarKeyboardsUtils
      */
     public function createDaysOfMonthKeyboard(int $_year, int $_month, CalendarConfig $_config): InlineKeyboard
     {
+        $this->getInlineCalendarLogger()->debug('createDaysOfMonthKeyboard started');
         $result = $this->createEmptyCalendar();
         $days = $this->getAllDaysOfMonth($_year, $_month);
 
@@ -45,11 +46,18 @@ trait CalendarKeyboardsUtils
         }
 
         $this->deleteEmptyCalendarRows($result);
-        $this->addDaysOfWeekKeyboardRow($result);
-        $this->preprocessCalendarKeyboard($result, $_config);
-        $this->addCommandKeyboardRow($_year, $_month, $result);
+        $this->getInlineCalendarLogger()->debug('deleteEmptyCalendarRows', $result);
 
-        $this->getInlineCalendarLogger()->debug('DaysOfMonthKeyboardArray', $result);
+        $this->addDaysOfWeekKeyboardRow($result);
+        $this->getInlineCalendarLogger()->debug('addDaysOfWeekKeyboardRow', $result);
+
+        $this->preprocessCalendarKeyboard($result, $_config);
+        $this->getInlineCalendarLogger()->debug('preprocessCalendarKeyboard', $result);
+
+        $this->addCommandKeyboardRow($_year, $_month, $result);
+        $this->getInlineCalendarLogger()->debug('addCommandKeyboardRow', $result);
+
+        $this->getInlineCalendarLogger()->debug('ResultKeyboard', $result);
         return InlineButton::buttonsArray(self::getCommandName(), $result);
     }
 
