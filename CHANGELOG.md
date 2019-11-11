@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Security
 
 
+## [1.1.1] - 2019-11-11
+### Changed
+- CalendarDateTimeUtils::createDateTimeFromDate() method now always return a DateTime object that have 00:00:00 time.
+
 ## [1.1.0] - 2019-11-11
 ### Changed
 - InlineCalendar::selectDate() method now returns the result date using a callback. And deletes temp conversation notes.

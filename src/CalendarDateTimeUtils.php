@@ -24,6 +24,9 @@ trait CalendarDateTimeUtils
     }
 
     /**
+     * Create a DateTime object from given time.
+     * Warning! The object will have a 00:00:00 time.
+     *
      * @param int $_year
      * @param int $_month
      * @param int $_day
@@ -32,6 +35,8 @@ trait CalendarDateTimeUtils
      */
     public function createDateTimeFromDate(int $_year, int $_month, int $_day): \DateTime
     {
-        return \DateTime::createFromFormat('Y.n.j', $_year . '.' . $_month . '.' . $_day);
+        $obj = \DateTime::createFromFormat('Y.n.j', $_year . '.' . $_month . '.' . $_day);
+        $obj->setTime(0, 0, 0, 0);
+        return $obj;
     }
 }
