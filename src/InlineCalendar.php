@@ -33,29 +33,43 @@ trait InlineCalendar
     /**
      * Select the date using inline calendar.
      *
-     * @param CalendarConfig $_config
-     * @param string         $_message_text
-     * @param Message        $_user_message
+     * @param CalendarConfig $_config                 The object contains calendar configs.
+     * @param string         $_message_text           The text that will be shown to user.
+     * @param Message        $_user_message           User's message telegram object.
+     * @param callable       $_result_callback        The callback in which will be passed the results
+     *                                                of date selection as an array parameter: [year, month, day].
      *
-     * @return bool The date is selected?
+     * @return null|mixed Return value of the result callback or null if a selection is still not completed.
      * @throws TelegramException
      */
-    public function selectDate(CalendarConfig $_config, string $_message_text, Message $_user_message): bool
-    {
+    public function selectDate(
+        CalendarConfig $_config,
+        string $_message_text,
+        Message $_user_message,
+        callable $_result_callback
+    ) {
         $text = $_user_message->getText(true) ?? '';
         $state = $this->getCalendarState($_config);
 
         switch ($state) {
             case $this->getStateYear():
-                return $this->processCommandSelectYear($_config, $_message_text, $text);
+                $isFinished = $this->processCommandSelectYear($_config, $_message_text, $text);
+                break;
 
             case $this->getStateMonth():
-                return $this->processCommandSelectMonth($_config, $_message_text, $text);
+                $isFinished = $this->processCommandSelectMonth($_config, $_message_text, $text);
+                break;
 
             default:
             case $this->getStateDayOfMonth():
-                return $this->stateSelectDayOfMonth($_config, $_message_text, $text, true);
+                $isFinished = $this->stateSelectDayOfMonth($_config, $_message_text, $text, true);
+                break;
         }
+        if ($isFinished === false) {
+            return null;
+        }
+
+        return $_result_callback($this->getFinalCalendarResult($_config));
     }
 
     //------------------------------------------------------------------------------------------------------------------

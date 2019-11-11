@@ -55,6 +55,16 @@ trait CalendarNotesUtils
     /**
      * @param CalendarConfig $_config
      *
+     * @throws TelegramException
+     */
+    private function deleteCalendarNotes(CalendarConfig $_config): void
+    {
+        $this->deleteConversationNotes([$_config->getCalendarName()]);
+    }
+
+    /**
+     * @param CalendarConfig $_config
+     *
      * @return string
      * @throws TelegramException
      */
@@ -75,7 +85,7 @@ trait CalendarNotesUtils
     }
 
     /**
-     * Получить текущую дату календаря.
+     * Get current calendar's date.
      *
      * @param CalendarConfig $_config
      *
@@ -90,6 +100,21 @@ trait CalendarNotesUtils
             (int)$notes[$this->getNoteSelectedMonth()],
             (int)$notes[$this->getNoteSelectedDay()]
         ];
+    }
+
+    /**
+     * Get the final result of the date selection and delete temp conversation notes.
+     *
+     * @param CalendarConfig $_config
+     *
+     * @return array
+     * @throws TelegramException
+     */
+    protected function getFinalCalendarResult(CalendarConfig $_config): array
+    {
+        $result = $this->getCalendarDate($_config);
+        $this->deleteCalendarNotes($_config);
+        return $result;
     }
 
     /**
