@@ -9,11 +9,6 @@ class CalendarConfig
     use CalendarDateTimeUtils;
 
     /**
-     * @var string
-     */
-    protected $calendarName;
-
-    /**
      * @var int[] [year, month, day].
      */
     protected $minimumDate;
@@ -31,14 +26,12 @@ class CalendarConfig
     /**
      * CalendarConfig constructor.
      *
-     * @param string $calendarName
-     * @param int[]  $minimumDate [year, month, day].
-     * @param int[]  $maximumDate [year, month, day].
-     * @param int[]  $defaultDate [year, month, day].
+     * @param int[] $minimumDate [year, month, day].
+     * @param int[] $maximumDate [year, month, day].
+     * @param int[] $defaultDate [year, month, day].
      */
-    public function __construct(string $calendarName, array $minimumDate, array $maximumDate, array $defaultDate)
+    public function __construct(array $minimumDate, array $maximumDate, array $defaultDate)
     {
-        $this->calendarName = $calendarName;
         $this->minimumDate = $minimumDate;
         $this->maximumDate = $maximumDate;
         $this->defaultDate = $defaultDate;
@@ -117,14 +110,6 @@ class CalendarConfig
     }
 
     //------------------------------------------------------------------------------------------------------------------
-
-    /**
-     * @return string
-     */
-    public function getCalendarName(): string
-    {
-        return $this->calendarName;
-    }
 
     /**
      * @return int[] [year, month, day].

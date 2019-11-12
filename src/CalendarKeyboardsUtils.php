@@ -28,6 +28,7 @@ trait CalendarKeyboardsUtils
      * @param CalendarConfig $_config
      *
      * @return InlineKeyboard
+     * @throws \Exception
      */
     public function createDaysOfMonthKeyboard(int $_year, int $_month, CalendarConfig $_config): InlineKeyboard
     {
@@ -51,7 +52,7 @@ trait CalendarKeyboardsUtils
         $this->addDaysOfWeekKeyboardRow($result);
         $this->getInlineCalendarLogger()->debug('addDaysOfWeekKeyboardRow', $result);
 
-        $this->preprocessCalendarKeyboard($result, $_config);
+        $this->preprocessDaysOfMonthKeyboardKeyboard($result, $_config);
         $this->getInlineCalendarLogger()->debug('preprocessCalendarKeyboard', $result);
 
         $this->addCommandKeyboardRow($_year, $_month, $result);
@@ -120,21 +121,22 @@ trait CalendarKeyboardsUtils
      * @param CalendarConfig $_config
      *
      * @return void
+     * @throws \Exception
      */
-    private function preprocessCalendarKeyboard(array &$_keyboard, CalendarConfig $_config): void
+    private function preprocessDaysOfMonthKeyboardKeyboard(array &$_keyboard, CalendarConfig $_config): void
     {
         [$year, $month, $day] = $this->getCalendarDate($_config);
-        [$todayYear, $todayMonth, $todayDay] = $this->getTodayDate();
+        [$defaultYear, $defaultMonth, $defaultDay] = $_config->getDefaultDate();
 
         $this->modify_array_recursive($_keyboard,
-            function ($key, $value) use ($year, $month, $day, $todayYear, $todayMonth): array {
+            function ($key, $value) use ($year, $month, $day, $defaultYear, $defaultMonth, $defaultDay): array {
                 // Reset blank strings' keys.
-                if ($value === $this->getBlankString()) {
-                    return [$this->getBlankString() . $key, $value];
+                if ($value === $this->getCalendarBlankString()) {
+                    return [$this->getCalendarBlankString() . $key, $value];
                 }
 
-                // Mark today day.
-                if ($year === $todayYear && $month === $todayMonth && $value === $day) {
+                // Mark default day.
+                if ($year === $defaultYear && $month === $defaultMonth && $value === $defaultDay) {
                     return [$value, '>' . $value . '<'];
                 }
 
@@ -152,7 +154,7 @@ trait CalendarKeyboardsUtils
         foreach ($_keyboard as $rowNumber => $row) {
             $isFull = false;
             foreach ($row as $value) {
-                if ($value !== $this->getBlankString()) {
+                if ($value !== $this->getCalendarBlankString()) {
                     $isFull = true;
                 }
             }
@@ -204,7 +206,7 @@ trait CalendarKeyboardsUtils
         $result = [];
         for ($i = 1; $i <= 6; $i++) {
             for ($j = 1; $j <= 7; $j++) {
-                $result[$i][$j] = $this->getBlankString();
+                $result[$i][$j] = $this->getCalendarBlankString();
             }
         }
         return $result;

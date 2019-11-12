@@ -11,6 +11,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Security
 
 
+## [1.2.0] - 2019-11-12
+### Changed
+- !CalendarConfig::$calendarName variable has been deleted from the class.
+- InlineCalendar now mark the default day, not today day.
+- Conversation notes' names have been changed.
+
 ## [1.1.2] - 2019-11-12
 - Added CalendarDateTimeUtils::createDateFromDateTime() method.
 

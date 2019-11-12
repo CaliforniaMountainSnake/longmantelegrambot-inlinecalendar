@@ -12,7 +12,7 @@ trait CalendarStringValues
      *
      * @return string
      */
-    private function getBlankString(): string
+    private function getCalendarBlankString(): string
     {
         return ' ';
     }
@@ -96,7 +96,15 @@ trait CalendarStringValues
     /**
      * @return string
      */
-    private function getNoteState(): string
+    private function getNoteNameCalendarTempNotes(): string
+    {
+        return 'inline_calendar_temp_notes';
+    }
+
+    /**
+     * @return string
+     */
+    private function getNoteNameState(): string
     {
         return 'state';
     }
@@ -104,7 +112,7 @@ trait CalendarStringValues
     /**
      * @return string
      */
-    private function getNoteSelectedYear(): string
+    private function getNoteNameSelectedYear(): string
     {
         return 'selected_year';
     }
@@ -112,7 +120,7 @@ trait CalendarStringValues
     /**
      * @return string
      */
-    private function getNoteSelectedMonth(): string
+    private function getNoteNameSelectedMonth(): string
     {
         return 'selected_month';
     }
@@ -120,7 +128,7 @@ trait CalendarStringValues
     /**
      * @return string
      */
-    private function getNoteSelectedDay(): string
+    private function getNoteNameSelectedDay(): string
     {
         return 'selected_day';
     }
@@ -128,7 +136,7 @@ trait CalendarStringValues
     /**
      * @return string
      */
-    private function getNoteIsFirstCalendarLaunch(): string
+    private function getNoteNameIsFirstCalendarLaunch(): string
     {
         return 'is_first_calendar_launch';
     }

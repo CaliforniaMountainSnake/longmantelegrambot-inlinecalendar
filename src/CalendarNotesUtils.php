@@ -20,16 +20,16 @@ trait CalendarNotesUtils
     private function getCalendarNotes(CalendarConfig $_config): array
     {
         [$defaultYear, $defaultMonth, $defaultDay] = $_config->getDefaultDate();
-        $notes = $this->getNote($_config->getCalendarName());
+        $notes = $this->getNote($this->getNoteNameCalendarTempNotes());
         if ($notes === null) {
             $notes = [
-                $this->getNoteIsFirstCalendarLaunch() => true,
-                $this->getNoteState() => $this->getStateDefault(),
-                $this->getNoteSelectedYear() => $defaultYear,
-                $this->getNoteSelectedMonth() => $defaultMonth,
-                $this->getNoteSelectedDay() => $defaultDay,
+                $this->getNoteNameIsFirstCalendarLaunch() => true,
+                $this->getNoteNameState() => $this->getStateDefault(),
+                $this->getNoteNameSelectedYear() => $defaultYear,
+                $this->getNoteNameSelectedMonth() => $defaultMonth,
+                $this->getNoteNameSelectedDay() => $defaultDay,
             ];
-            $this->setConversationNotes([$_config->getCalendarName() => $notes]);
+            $this->setConversationNotes([$this->getNoteNameCalendarTempNotes() => $notes]);
         }
         return $notes;
     }
@@ -48,18 +48,16 @@ trait CalendarNotesUtils
             $currentNotes[$key] = $note;
         }
 
-        $this->setConversationNotes([$_config->getCalendarName() => $currentNotes]);
+        $this->setConversationNotes([$this->getNoteNameCalendarTempNotes() => $currentNotes]);
         return $currentNotes;
     }
 
     /**
-     * @param CalendarConfig $_config
-     *
      * @throws TelegramException
      */
-    private function deleteCalendarNotes(CalendarConfig $_config): void
+    private function deleteCalendarNotes(): void
     {
-        $this->deleteConversationNotes([$_config->getCalendarName()]);
+        $this->deleteConversationNotes([$this->getNoteNameCalendarTempNotes()]);
     }
 
     /**
@@ -70,7 +68,7 @@ trait CalendarNotesUtils
      */
     private function getCalendarState(CalendarConfig $_config): string
     {
-        return $this->getCalendarNotes($_config)[$this->getNoteState()];
+        return $this->getCalendarNotes($_config)[$this->getNoteNameState()];
     }
 
     /**
@@ -81,7 +79,7 @@ trait CalendarNotesUtils
      */
     private function setCalendarState(CalendarConfig $_config, string $_new_state): void
     {
-        $this->setCalendarNotes($_config, [$this->getNoteState() => $_new_state]);
+        $this->setCalendarNotes($_config, [$this->getNoteNameState() => $_new_state]);
     }
 
     /**
@@ -96,9 +94,9 @@ trait CalendarNotesUtils
     {
         $notes = $this->getCalendarNotes($_config);
         return [
-            (int)$notes[$this->getNoteSelectedYear()],
-            (int)$notes[$this->getNoteSelectedMonth()],
-            (int)$notes[$this->getNoteSelectedDay()]
+            (int)$notes[$this->getNoteNameSelectedYear()],
+            (int)$notes[$this->getNoteNameSelectedMonth()],
+            (int)$notes[$this->getNoteNameSelectedDay()]
         ];
     }
 
@@ -113,7 +111,7 @@ trait CalendarNotesUtils
     protected function getFinalCalendarResult(CalendarConfig $_config): array
     {
         $result = $this->getCalendarDate($_config);
-        $this->deleteCalendarNotes($_config);
+        $this->deleteCalendarNotes();
         return $result;
     }
 
@@ -130,9 +128,9 @@ trait CalendarNotesUtils
     protected function updateCalendarDate(CalendarConfig $_config, ?int $_year, ?int $_month, ?int $_day): void
     {
         $notes = [];
-        $_year !== null && $notes[$this->getNoteSelectedYear()] = $_year;
-        $_month !== null && $notes[$this->getNoteSelectedMonth()] = $_month;
-        $_day !== null && $notes[$this->getNoteSelectedDay()] = $_day;
+        $_year !== null && $notes[$this->getNoteNameSelectedYear()] = $_year;
+        $_month !== null && $notes[$this->getNoteNameSelectedMonth()] = $_month;
+        $_day !== null && $notes[$this->getNoteNameSelectedDay()] = $_day;
 
         $this->setCalendarNotes($_config, $notes);
     }
@@ -145,6 +143,6 @@ trait CalendarNotesUtils
      */
     private function isFirstCalendarLaunch(CalendarConfig $_config): bool
     {
-        return $this->getCalendarNotes($_config)[$this->getNoteIsFirstCalendarLaunch()];
+        return $this->getCalendarNotes($_config)[$this->getNoteNameIsFirstCalendarLaunch()];
     }
 }
