@@ -11,6 +11,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Security
 
 
+## [1.1.2] - 2019-11-12
+- Added CalendarDateTimeUtils::createDateFromDateTime() method.
+
 ## [1.1.1] - 2019-11-11
 ### Changed
 - CalendarDateTimeUtils::createDateTimeFromDate() method now always return a DateTime object that have 00:00:00 time.

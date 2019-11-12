@@ -8,24 +8,39 @@ trait CalendarDateTimeUtils
 
     /**
      * @return int[] [year, month, day].
+     * @throws \Exception
      */
     public function getTodayDate(): array
     {
-        return [(int)\date('Y'), (int)\date('n'), (int)\date('j')];
+        return $this->createDateFromDateTime($this->getTodayDateTime());
     }
 
     /**
      * @return \DateTime
+     * @throws \Exception
      */
     public function getTodayDateTime(): \DateTime
     {
-        [$todayYear, $todayMonth, $todayDay] = $this->getTodayDate();
-        return $this->createDateTimeFromDate($todayYear, $todayMonth, $todayDay);
+        return new \DateTime();
+    }
+
+    /**
+     * @param \DateTime $_date_time
+     *
+     * @return array [year, month, day].
+     */
+    public function createDateFromDateTime(\DateTime $_date_time): array
+    {
+        $year = $_date_time->format('Y');
+        $month = $_date_time->format('n');
+        $day = $_date_time->format('d');
+
+        return [(int)$year, (int)$month, (int)$day];
     }
 
     /**
      * Create a DateTime object from given time.
-     * Warning! The object will have a 00:00:00 time.
+     * Warning! The object always will have 00:00:00 time!
      *
      * @param int $_year
      * @param int $_month
