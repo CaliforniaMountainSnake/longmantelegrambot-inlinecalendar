@@ -55,9 +55,12 @@ trait CalendarNotesUtils
     /**
      * @throws TelegramException
      */
-    private function deleteCalendarNotes(): void
+    private function deleteCalendarTempNotes(): void
     {
-        $this->deleteConversationNotes([$this->getNoteNameCalendarTempNotes()]);
+        $this->deleteConversationNotes([
+            $this->getNoteNameCalendarTempNotes(),
+            $this->getNoteNameCalendarMsgId(),
+        ]);
     }
 
     /**
@@ -111,7 +114,7 @@ trait CalendarNotesUtils
     protected function getFinalCalendarResult(CalendarConfig $_config): array
     {
         $result = $this->getCalendarDate($_config);
-        $this->deleteCalendarNotes();
+        $this->deleteCalendarTempNotes();
         return $result;
     }
 

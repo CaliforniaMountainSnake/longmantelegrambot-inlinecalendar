@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Security
 
 
+## [1.2.1] - 2019-11-12
+### Fixed
+- Added forgotten deletion of the conversation note with calendar msg id.
+
 ## [1.2.0] - 2019-11-12
 ### Changed
 - !CalendarConfig::$calendarName variable has been deleted from the class.

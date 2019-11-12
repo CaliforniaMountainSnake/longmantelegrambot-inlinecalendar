@@ -104,6 +104,14 @@ trait CalendarStringValues
     /**
      * @return string
      */
+    private function getNoteNameCalendarMsgId(): string
+    {
+        return $this->getNoteNameCalendarTempNotes() . '_msg_id';
+    }
+
+    /**
+     * @return string
+     */
     private function getNoteNameState(): string
     {
         return 'state';

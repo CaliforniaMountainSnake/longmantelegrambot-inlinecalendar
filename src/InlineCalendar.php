@@ -319,7 +319,7 @@ trait InlineCalendar
         Keyboard $_keyboard = null
     ): ServerResponse {
         $this->setCalendarNotes($_config, [$this->getNoteNameIsFirstCalendarLaunch() => false]);
-        return $this->showTextMessage($this->getNoteNameCalendarTempNotes() . '_msg_id', $_message_text, $_errors,
+        return $this->showTextMessage($this->getNoteNameCalendarMsgId(), $_message_text, $_errors,
             $_keyboard);
     }
 
