@@ -10,9 +10,7 @@ use Longman\TelegramBot\Entities\ServerResponse;
 use Longman\TelegramBot\Exception\TelegramException;
 
 /**
- * @TODO: выделять не сегодняшнюю дату, а дефолтную.
- *
- * Inline-календарь для выбора даты.
+ * Inline calendar for date selection.
  */
 trait InlineCalendar
 {
@@ -319,8 +317,7 @@ trait InlineCalendar
         Keyboard $_keyboard = null
     ): ServerResponse {
         $this->setCalendarNotes($_config, [$this->getNoteNameIsFirstCalendarLaunch() => false]);
-        return $this->showTextMessage($this->getNoteNameCalendarMsgId(), $_message_text, $_errors,
-            $_keyboard);
+        return $this->showAnyMessage($this->getNoteNameCalendarMsgId(), $_message_text, null, $_errors, $_keyboard);
     }
 
     /**
