@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Security
 
 
+## [1.4.0] - 2021-03-14
+### Fixed
+- Now the calendar correctly process month/year selection with the borders of allowable range.
+
 ## [1.3.0] - 2021-03-14
 ### Changed
 - Updated composer dependencies.

@@ -103,19 +103,19 @@ trait InlineCalendar
 
         // Process text.
         if ($this->isBlankString($_text)) {
-            // Если нажали пустую ячейку.
+            // If user pressed a blank cell.
             return $this->stateSelectDayOfMonth($_config, $_message_text, $_text, false);
         }
         if ($_text === $this->getCommandSelectYear()) {
-            // Запустить state выбора года.
+            // Run year selection state.
             return $this->processCommandSelectYear($_config, $_message_text, $_text);
         }
         if ($_text === $this->getCommandSelectMonth()) {
-            // Запустить state выбора месяца.
+            // Run month selection state.
             return $this->processCommandSelectMonth($_config, $_message_text, $_text);
         }
         if ($_text === $this->getCommandMoveCalendarLeft() || $_text === $this->getCommandMoveCalendarRight()) {
-            // Сдвинуть календарь на месяц вперед/назад.
+            // Move the calendar to 1 month to the forward/back.
             return $this->processCommandMoveCalendar($_config, $_message_text, $_text);
         }
 
@@ -126,7 +126,7 @@ trait InlineCalendar
     //------------------------------------------------------------------------------------------------------------------
 
     /**
-     * Обработать команды сдвига календаря на месяц в сторону.
+     * Process the command of calendar moving by a month.
      *
      * @param CalendarConfig $_config
      * @param string         $_message_text
@@ -139,17 +139,17 @@ trait InlineCalendar
     {
         $isRight = $_text === $this->getCommandMoveCalendarRight();
         [$year, $month, $day] = $this->getCalendarDate($_config);
-        [$newMonth, $newYear] = $this->moveMonth($_config, $isRight);
+        [$newYear, $newMonth, $newDay] = $this->moveMonth($_config, $isRight);
         $errors = [];
 
         // Validation.
-        $this->validateCalendarDate($errors, $_config, $newYear, $newMonth, $day);
+        $this->validateCalendarDate($errors, $_config, $newYear, $newMonth, $newDay);
 
         // Update date.
         if (empty($errors)) {
             $year = $newYear;
             $month = $newMonth;
-            $this->updateCalendarDate($_config, $year, $month, null);
+            $this->updateCalendarDate($_config, $year, $month, $newDay);
         }
 
         // Show message.
@@ -157,7 +157,7 @@ trait InlineCalendar
     }
 
     /**
-     * Обработать текст с выбранным днем месяца от юзера.
+     * Process the text from user with the selected day of month.
      *
      * @param CalendarConfig $_config
      * @param string         $_message_text
@@ -189,7 +189,7 @@ trait InlineCalendar
     //------------------------------------------------------------------------------------------------------------------
 
     /**
-     * Выбор года.
+     * Year selection.
      *
      * @param CalendarConfig $_config
      * @param string         $_message_text
@@ -209,20 +209,23 @@ trait InlineCalendar
             $this->createYearsKeyboard($_config),
             function (string $_text) use ($_config, $month, $day): array {
                 // validation.
+                $selectedYear = (int)$_text;
                 $errors = [];
                 $this->validateValues($errors, $_config->getAvailableYears(), $_text);
-                $this->validateCalendarDate($errors, $_config, (int)$_text, $month, $day);
+                $this->validateCalendarDate($errors, $_config,
+                    ...$this->smoothExtremumDay($_config, $selectedYear, $month, $day));
                 return $errors;
             },
-            function (string $text) use ($_config, $_message_text, $_text): bool {
+            function (string $text) use ($_config, $month, $day, $_message_text, $_text): bool {
                 // success.
-                $this->updateCalendarDate($_config, (int)$text, null, null);
+                $selectedYear = (int)$text;
+                $this->updateCalendarDate($_config, ...$this->smoothExtremumDay($_config, $selectedYear, $month, $day));
                 return $this->stateSelectDayOfMonth($_config, $_message_text, $_text, false);
             });
     }
 
     /**
-     * Выбор месяца.
+     * Month selection.
      *
      * @param CalendarConfig $_config
      * @param string         $_message_text
@@ -242,20 +245,24 @@ trait InlineCalendar
             $this->createMonthsKeyboard(),
             function (string $_text) use ($_config, $year, $day): array {
                 // validation.
+                $selectedMonth = (int)$_text;
                 $errors = [];
-                $this->validateValues($errors, $_config->getAvailableMonths(), $_text);
-                $this->validateCalendarDate($errors, $_config, $year, (int)$_text, $day);
+                $this->validateValues($errors, $_config->getAvailableMonths(), $selectedMonth);
+                $this->validateCalendarDate($errors, $_config,
+                    ...$this->smoothExtremumDay($_config, $year, $selectedMonth, $day));
                 return $errors;
             },
-            function (string $text) use ($_config, $_message_text, $_text): bool {
+            function (string $text) use ($_config, $year, $day, $_message_text, $_text): bool {
                 // success.
+                $selectedMonth = (int)$text;
                 $this->updateCalendarDate($_config, null, (int)$text, null);
+                $this->updateCalendarDate($_config, ...$this->smoothExtremumDay($_config, $year, $selectedMonth, $day));
                 return $this->stateSelectDayOfMonth($_config, $_message_text, $_text, false);
             });
     }
 
     /**
-     * Выбрать одно значение с клавиатуры и вернуться к календарю выбора дня месяца.
+     * Select one value from keyboard and return to the day of month selection.
      *
      * @param CalendarConfig $_config
      * @param string         $_message_text
@@ -321,7 +328,7 @@ trait InlineCalendar
     }
 
     /**
-     * Показать сообщение выбора дня месяца.
+     * Show the day of month selection message.
      *
      * @param int            $_year
      * @param int            $_month
@@ -351,7 +358,7 @@ trait InlineCalendar
     //------------------------------------------------------------------------------------------------------------------
 
     /**
-     * Провалидировать дату. Проверить, не выходит ли она за заданные пределы.
+     * Validate date. Check it is not out of range.
      *
      * @param array          $_errors
      * @param CalendarConfig $_config
@@ -382,7 +389,7 @@ trait InlineCalendar
     }
 
     /**
-     * Проверить, содержится ли значение в массиве допустимых значений.
+     * Check the value contains in the array of allowable values.
      *
      * @param array  $_errors
      * @param array  $_available_values
@@ -402,12 +409,35 @@ trait InlineCalendar
     //------------------------------------------------------------------------------------------------------------------
 
     /**
-     * Сдвинуть месяц на 1 единицу влево или вправо.
+     * @param CalendarConfig $_config
+     * @param int            $year
+     * @param int            $month
+     * @param int            $day
+     *
+     * @return array [year, month, day].
+     */
+    private function smoothExtremumDay(CalendarConfig $_config, int $year, int $month, int $day): array
+    {
+        [$minYear, $minMonth, $minDay] = $_config->getMinimumDate();
+        [$maxYear, $maxMonth, $maxDay] = $_config->getMaximumDate();
+
+        if ($year === $minYear && $month === $minMonth && $day < $minDay) {
+            $day = $minDay;
+        }
+        if ($year === $maxYear && $month === $maxMonth && $day > $maxDay) {
+            $day = $maxDay;
+        }
+
+        return [$year, $month, $day];
+    }
+
+    /**
+     * Move the month 1 unit to the right or left.
      *
      * @param CalendarConfig $_config
      * @param bool           $_is_right
      *
-     * @return array [new_month_value, new_year_value].
+     * @return array [new_year_value, new_month_value, new_day_value].
      * @throws TelegramException
      */
     private function moveMonth(CalendarConfig $_config, bool $_is_right): array
@@ -426,11 +456,11 @@ trait InlineCalendar
             ++$year;
         }
 
-        return [$month, $year];
+        return $this->smoothExtremumDay($_config, $year, $month, $day);
     }
 
     /**
-     * Начинается ли текст с пустой строки?
+     * Is the given text start with blank line?
      *
      * @param string $_text
      *
