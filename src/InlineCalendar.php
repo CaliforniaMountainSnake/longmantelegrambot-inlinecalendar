@@ -33,11 +33,13 @@ trait InlineCalendar
     /**
      * Select the date using inline calendar.
      *
-     * @param CalendarConfig $_config                 The object contains calendar configs.
-     * @param string         $_message_text           The text that will be shown to user.
-     * @param Message        $_user_message           User's message telegram object.
-     * @param callable       $_result_callback        The callback in which will be passed the results
-     *                                                of date selection as an array parameter: [year, month, day].
+     * @param CalendarConfig $_config                          The object contains calendar configs.
+     * @param string         $_message_text                    The text that will be shown to user.
+     * @param Message        $_user_message                    User's message telegram object.
+     * @param callable       $_result_callback                 The callback in which will be passed the results
+     *                                                         of date selection as an array parameter:
+     *                                                         [year, month, day].
+     * @param bool           $_is_delete_last_calendar_message Delete the last calendar message?
      *
      * @return null|mixed Return value of the result callback or null if a selection is still not completed.
      * @throws TelegramException
@@ -46,7 +48,8 @@ trait InlineCalendar
         CalendarConfig $_config,
         string $_message_text,
         Message $_user_message,
-        callable $_result_callback
+        callable $_result_callback,
+        bool $_is_delete_last_calendar_message = false
     ) {
         $text = $_user_message->getText(true) ?? '';
         $state = $this->getCalendarState($_config);
@@ -69,6 +72,9 @@ trait InlineCalendar
             return null;
         }
 
+        if ($_is_delete_last_calendar_message) {
+            $this->deleteMessage($this->getNoteNameCalendarMsgId());
+        }
         return $_result_callback($this->getFinalCalendarResult($_config));
     }
 

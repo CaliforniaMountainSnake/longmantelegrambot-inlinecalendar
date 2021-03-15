@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Security
 
 
+## [1.4.1] - 2021-03-15
+### Added
+- Added an optional parameter "is_delete_last_calendar_message" to the InlineCalendar::selectDate() method.
+
 ## [1.4.0] - 2021-03-14
 ### Fixed
 - Now the calendar correctly process month/year selection with the borders of allowable range.
