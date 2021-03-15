@@ -73,7 +73,8 @@ trait InlineCalendar
         }
 
         if ($_is_delete_last_calendar_message) {
-            $this->deleteMessage($this->getNoteNameCalendarMsgId());
+            $lastCalendarMsgId = $this->getPrevMsgData($this->getNoteNameCalendarMsgId())[0];
+            $this->deleteMessage($lastCalendarMsgId);
         }
         return $_result_callback($this->getFinalCalendarResult($_config));
     }
