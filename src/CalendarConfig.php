@@ -2,6 +2,9 @@
 
 namespace CaliforniaMountainSnake\InlineCalendar;
 
+use DateTime;
+use DateTimeZone;
+
 class CalendarConfig
 {
     use InlineCalendarLogger;
@@ -24,52 +27,63 @@ class CalendarConfig
     protected $defaultDate;
 
     /**
+     * @var DateTimeZone
+     */
+    protected $timezone;
+
+    /**
      * CalendarConfig constructor.
      *
-     * @param int[] $minimumDate [year, month, day].
-     * @param int[] $maximumDate [year, month, day].
-     * @param int[] $defaultDate [year, month, day].
+     * @param int[]             $minimumDate [year, month, day].
+     * @param int[]             $maximumDate [year, month, day].
+     * @param int[]             $defaultDate [year, month, day].
+     * @param DateTimeZone|null $timezone    Target timezone. If null passed, the default server timezone will be used.
      */
-    public function __construct(array $minimumDate, array $maximumDate, array $defaultDate)
-    {
+    public function __construct(
+        array $minimumDate,
+        array $maximumDate,
+        array $defaultDate,
+        DateTimeZone $timezone = null
+    ) {
         $this->minimumDate = $minimumDate;
         $this->maximumDate = $maximumDate;
         $this->defaultDate = $defaultDate;
+        $this->timezone = $timezone ?? (new DateTime())->getTimezone();
     }
 
     //------------------------------------------------------------------------------------------------------------------
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
-    public function getMinimumDateTime(): \DateTime
+    public function getMinimumDateTime(): DateTime
     {
         [$minYear, $minMonth, $minDay] = $this->getMinimumDate();
-        return $this->createDateTimeFromDate($minYear, $minMonth, $minDay);
+        return $this->createDateTimeFromDate($minYear, $minMonth, $minDay, $this->timezone);
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
-    public function getMaximumDateTime(): \DateTime
+    public function getMaximumDateTime(): DateTime
     {
         [$maxYear, $maxMonth, $maxDay] = $this->getMaximumDate();
-        return $this->createDateTimeFromDate($maxYear, $maxMonth, $maxDay);
+        return $this->createDateTimeFromDate($maxYear, $maxMonth, $maxDay, $this->timezone);
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
-    public function getDefaultDateTime(): \DateTime
+    public function getDefaultDateTime(): DateTime
     {
         [$defaultYear, $defaultMonth, $defaultDay] = $this->getDefaultDate();
-        return $this->createDateTimeFromDate($defaultYear, $defaultMonth, $defaultDay);
+        return $this->createDateTimeFromDate($defaultYear, $defaultMonth, $defaultDay, $this->timezone);
     }
 
     //------------------------------------------------------------------------------------------------------------------
 
     /**
-     * Получить все доступные для выбора годы.
+     * Get all years that are available for picking.
      *
      * @return int[]
      */
@@ -133,5 +147,13 @@ class CalendarConfig
     public function getDefaultDate(): array
     {
         return $this->defaultDate;
+    }
+
+    /**
+     * @return DateTimeZone
+     */
+    public function getTimezone(): DateTimeZone
+    {
+        return $this->timezone;
     }
 }

@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Security
 
 
+## [1.4.3] - 2021-05-03
+### Added
+- The library supports a timezone now.
+
 ## [1.4.2] - 2021-03-15
 ### Fixed
 - Fix of the last calendar message deletion.

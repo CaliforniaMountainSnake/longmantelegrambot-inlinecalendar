@@ -3,6 +3,7 @@
 namespace CaliforniaMountainSnake\InlineCalendar;
 
 use DateTime;
+use DateTimeZone;
 use Exception;
 
 trait CalendarDateTimeUtils
@@ -10,21 +11,25 @@ trait CalendarDateTimeUtils
     use InlineCalendarLogger;
 
     /**
+     * @param DateTimeZone|null $timezone
+     *
      * @return int[] [year, month, day].
      * @throws Exception
      */
-    public function getTodayDate(): array
+    public function getTodayDate(DateTimeZone $timezone = null): array
     {
-        return $this->createDateFromDateTime($this->getTodayDateTime());
+        return $this->createDateFromDateTime($this->getTodayDateTime($timezone));
     }
 
     /**
+     * @param DateTimeZone|null $timezone
+     *
      * @return DateTime
      * @throws Exception
      */
-    public function getTodayDateTime(): DateTime
+    public function getTodayDateTime(DateTimeZone $timezone = null): DateTime
     {
-        return new DateTime();
+        return new DateTime('now', $timezone);
     }
 
     /**
@@ -45,16 +50,22 @@ trait CalendarDateTimeUtils
      * Create a DateTime object from given time.
      * Warning! The object always will have 00:00:00 time!
      *
-     * @param int  $_year
-     * @param int  $_month
-     * @param int  $_day
-     * @param bool $_is_min_time
+     * @param int               $_year
+     * @param int               $_month
+     * @param int               $_day
+     * @param DateTimeZone|null $timezone
+     * @param bool              $_is_min_time
      *
      * @return DateTime
      */
-    public function createDateTimeFromDate(int $_year, int $_month, int $_day, bool $_is_min_time = true): DateTime
-    {
-        $obj = DateTime::createFromFormat('Y.n.j', $_year . '.' . $_month . '.' . $_day);
+    public function createDateTimeFromDate(
+        int $_year,
+        int $_month,
+        int $_day,
+        DateTimeZone $timezone = null,
+        bool $_is_min_time = true
+    ): DateTime {
+        $obj = DateTime::createFromFormat('Y.n.j', $_year . '.' . $_month . '.' . $_day, $timezone);
         $this->roundDateTimeDown($obj);
         if (!$_is_min_time) {
             $this->roundDateTimeUp($obj);

@@ -385,7 +385,7 @@ trait InlineCalendar
         $format = $this->calendarLangWrongDateFormat();
         $minDate = $_config->getMinimumDateTime();
         $maxDate = $_config->getMaximumDateTime();
-        $targetDate = $this->createDateTimeFromDate($_year, $_month, $_day);
+        $targetDate = $this->createDateTimeFromDate($_year, $_month, $_day, $_config->getTimezone());
 
         if ($targetDate < $minDate || $targetDate > $maxDate) {
             $_errors[] = $this->calendarLangWrongDate($minDate->format($format), $maxDate->format($format));
